@@ -1,0 +1,11 @@
+# Internal dev docs / source data — never publish
+CLAUDE.md
+Profile.pdf
+
+# Claude Code session data
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

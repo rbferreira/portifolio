@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RafaOS — Rafael Ferreira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+/* ══════════════════════════════════════════
+   THEME SYSTEM — CSS Custom Properties
+   ══════════════════════════════════════════ */
+:root {
+  --titlebar-h:38px;
+  --dock-h:72px;
+  --menubar-h:30px;
+  --radius:12px;
+  --radius-lg:16px;
+  --red:#ff5f57;--yellow:#febc2e;--green:#28c840;
+  --transition-theme: background .4s ease, color .4s ease, border-color .4s ease, box-shadow .4s ease;
+}
+
+/* ── DARK THEME ── */
+[data-theme="dark"] {
+  --bg-desktop: linear-gradient(135deg, #0a0f1a 0%, #0d1b2a 30%, #1a1a3e 60%, #0a192f 100%);
+  --bg-blob1: rgba(0,245,212,0.12);
+  --bg-blob2: rgba(99,102,241,0.1);
+  --menubar-bg: rgba(8,12,21,0.82);
+  --menubar-text: #e0e6ed;
+  --glass: rgba(15,23,42,0.72);
+  --glass-border: rgba(0,245,212,0.15);
+  --glass-window: rgba(15,23,42,0.88);
+  --glass-window-border: rgba(0,245,212,0.12);
+  --titlebar-bg: rgba(15,23,42,0.95);
+  --titlebar-border: #1e293b;
+  --titlebar-text: #94a3b8;
+  --dock-bg: rgba(15,23,42,0.65);
+  --dock-border: rgba(0,245,212,0.18);
+  --icon-label: #e0e6ed;
+  --icon-hover: rgba(0,245,212,0.12);
+  --icon-active: rgba(0,245,212,0.22);
+  --accent: #00f5d4;
+  --accent2: #7b61ff;
+  --accent-glow: rgba(0,245,212,0.3);
+  --text: #e0e6ed;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --surface: rgba(15,23,42,0.6);
+  --surface-border: rgba(30,41,59,0.8);
+  --card-bg: rgba(15,23,42,0.5);
+  --card-border: rgba(30,41,59,0.6);
+  --card-hover-shadow: 0 8px 24px rgba(0,245,212,0.08);
+  --bio-bg: linear-gradient(135deg, rgba(0,245,212,0.08), rgba(99,102,241,0.06));
+  --bio-border: var(--accent);
+  --badge-bg: linear-gradient(135deg, rgba(0,245,212,0.06), rgba(99,102,241,0.04));
+  --badge-border: rgba(0,245,212,0.12);
+  --badge-hover-shadow: 0 8px 24px rgba(0,245,212,0.1);
+  --tag-bg: rgba(0,245,212,0.12);
+  --tag-text: var(--accent);
+  --finder-sidebar-bg: rgba(8,12,21,0.5);
+  --finder-sidebar-border: #1e293b;
+  --finder-item-hover: rgba(0,245,212,0.08);
+  --finder-active-bg: var(--accent);
+  --finder-active-text: #0a0f1a;
+  --stat-bg: rgba(15,23,42,0.5);
+  --stat-border: rgba(30,41,59,0.6);
+  --stat-gradient: linear-gradient(135deg, var(--accent), #06b6d4);
+  --stat-bar-bg: #1e293b;
+  --skill-bg: rgba(15,23,42,0.5);
+  --skill-border: rgba(30,41,59,0.6);
+  --scrollbar-thumb: #334155;
+  --notif-bg: rgba(15,23,42,0.95);
+  --notif-border: rgba(0,245,212,0.15);
+  --notes-border: #1e293b;
+  --mail-border: #1e293b;
+  --mail-body-bg: rgba(8,12,21,0.4);
+  --shadow: 0 8px 32px rgba(0,0,0,.35);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.45);
+  --boot-bg: #050810;
+  --boot-text: #e0e6ed;
+  --boot-progress-bg: #1e293b;
+  --boot-progress-fill: linear-gradient(90deg, var(--accent), #06b6d4);
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+  --bg-desktop: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 25%, #c7d2fe 50%, #bfdbfe 75%, #e0e7ff 100%);
+  --bg-blob1: rgba(99,102,241,0.12);
+  --bg-blob2: rgba(59,130,246,0.1);
+  --menubar-bg: rgba(255,255,255,0.78);
+  --menubar-text: #334155;
+  --glass: rgba(255,255,255,0.65);
+  --glass-border: rgba(99,102,241,0.15);
+  --glass-window: rgba(255,255,255,0.92);
+  --glass-window-border: rgba(99,102,241,0.12);
+  --titlebar-bg: rgba(248,250,252,0.95);
+  --titlebar-border: #e2e8f0;
+  --titlebar-text: #475569;
+  --dock-bg: rgba(255,255,255,0.55);
+  --dock-border: rgba(99,102,241,0.18);
+  --icon-label: #334155;
+  --icon-hover: rgba(99,102,241,0.1);
+  --icon-active: rgba(99,102,241,0.2);
+  --accent: #4f46e5;
+  --accent2: #7c3aed;
+  --accent-glow: rgba(79,70,229,0.2);
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --surface: rgba(248,250,252,0.7);
+  --surface-border: rgba(226,232,240,0.8);
+  --card-bg: rgba(248,250,252,0.6);
+  --card-border: rgba(226,232,240,0.6);
+  --card-hover-shadow: 0 8px 24px rgba(79,70,229,0.1);
+  --bio-bg: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  --bio-border: var(--accent);
+  --badge-bg: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  --badge-border: rgba(99,102,241,0.15);
+  --badge-hover-shadow: 0 8px 24px rgba(79,70,229,0.12);
+  --tag-bg: rgba(79,70,229,0.1);
+  --tag-text: var(--accent);
+  --finder-sidebar-bg: rgba(241,245,249,0.6);
+  --finder-sidebar-border: #e2e8f0;
+  --finder-item-hover: rgba(79,70,229,0.06);
+  --finder-active-bg: var(--accent);
+  --finder-active-text: #fff;
+  --stat-bg: rgba(248,250,252,0.7);
+  --stat-border: rgba(226,232,240,0.8);
+  --stat-gradient: linear-gradient(135deg, var(--accent), #06b6d4);
+  --stat-bar-bg: #e2e8f0;
+  --skill-bg: rgba(248,250,252,0.7);
+  --skill-border: rgba(226,232,240,0.8);
+  --scrollbar-thumb: #cbd5e1;
+  --notif-bg: rgba(255,255,255,0.95);
+  --notif-border: rgba(99,102,241,0.15);
+  --notes-border: #e2e8f0;
+  --mail-border: #e2e8f0;
+  --mail-body-bg: rgba(248,250,252,0.6);
+  --shadow: 0 8px 32px rgba(0,0,0,.1);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.12);
+  --boot-bg: #f8fafc;
+  --boot-text: #1e293b;
+  --boot-progress-bg: #e2e8f0;
+  --boot-progress-fill: linear-gradient(90deg, var(--accent), #06b6d4);
+}
+
+html,body{height:100%;overflow:hidden;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;transition:var(--transition-theme)}
+
+/* ── Boot Screen ── */
+#boot-screen{position:fixed;inset:0;z-index:99999;background:var(--boot-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease}
+#boot-screen.hidden{opacity:0;pointer-events:none}
+.boot-logo{position:relative;width:100px;height:100px;margin-bottom:36px}
+.boot-logo svg{width:100%;height:100%;animation:pulse 1.5s ease-in-out infinite alternate}
+#boot-screen h1{color:var(--boot-text);font-size:24px;font-weight:300;letter-spacing:3px;margin-bottom:8px;font-family:"JetBrains Mono",monospace}
+#boot-screen .boot-sub{color:var(--text-muted);font-size:12px;letter-spacing:2px;margin-bottom:36px;font-family:"JetBrains Mono",monospace}
+#boot-screen .progress-track{width:260px;height:4px;background:var(--boot-progress-bg);border-radius:2px;overflow:hidden}
+#boot-screen .progress-fill{height:100%;width:0;background:var(--boot-progress-fill);border-radius:2px;transition:width .08s linear;box-shadow:0 0 12px var(--accent-glow)}
+@keyframes pulse{0%{transform:scale(1);filter:drop-shadow(0 0 8px var(--accent-glow))}100%{transform:scale(1.05);filter:drop-shadow(0 0 20px var(--accent-glow))}}
+
+/* ── Desktop ── */
+#desktop{position:fixed;inset:0;background:var(--bg-desktop);display:none;flex-direction:column;transition:var(--transition-theme)}
+#desktop::before,#desktop::after{content:'';position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;transition:var(--transition-theme)}
+#desktop::before{width:600px;height:600px;background:var(--bg-blob1);top:-150px;right:-100px}
+#desktop::after{width:500px;height:500px;background:var(--bg-blob2);bottom:-100px;left:-80px}
+#desktop.visible{display:flex}
+
+/* ── Menu Bar ── */
+#menubar{height:var(--menubar-h);background:var(--menubar-bg);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);display:flex;align-items:center;justify-content:space-between;padding:0 16px;color:var(--menubar-text);font-size:13px;font-weight:500;z-index:9000;flex-shrink:0;user-select:none;border-bottom:1px solid var(--glass-border);transition:var(--transition-theme)}
+#menubar .left{display:flex;gap:16px;align-items:center}
+#menubar .left .apple{font-weight:700;font-size:13px;cursor:default;font-family:"JetBrains Mono",monospace;letter-spacing:1px}
+#menubar .left span{cursor:default;opacity:.75;font-size:12px}
+#menubar .left span:hover{opacity:1}
+#menubar .right{display:flex;gap:12px;align-items:center;font-size:11px;font-family:"JetBrains Mono",monospace}
+
+/* Theme toggle */
+.theme-toggle{width:40px;height:20px;border-radius:12px;background:var(--surface);border:1px solid var(--surface-border);cursor:pointer;position:relative;transition:all .3s ease;display:flex;align-items:center;padding:0 2px}
+.theme-toggle::after{content:'';width:16px;height:16px;border-radius:50%;background:var(--accent);transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px var(--accent-glow)}
+[data-theme="light"] .theme-toggle::after{transform:translateX(18px)}
+.theme-toggle .toggle-icons{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 4px;font-size:10px;pointer-events:none}
+
+/* ── Desktop Icons Area ── */
+#icons-area{flex:1;padding:24px 20px 10px;display:grid;grid-template-columns:repeat(auto-fill,90px);grid-template-rows:repeat(auto-fill,96px);gap:8px;align-content:start;justify-content:end;z-index:100}
+.desktop-icon{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;border-radius:12px;cursor:pointer;transition:background .15s,transform .15s;user-select:none;text-align:center}
+.desktop-icon:hover{background:var(--icon-hover)}
+.desktop-icon:active{background:var(--icon-active);transform:scale(.95)}
+.desktop-icon .ico{font-size:42px;line-height:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+.desktop-icon .label{font-size:11px;color:var(--icon-label);text-shadow:0 1px 4px rgba(0,0,0,.3);line-height:1.2;max-width:80px;word-wrap:break-word;font-weight:500}
+
+/* ── Dock ── */
+#dock-wrapper{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);z-index:8000;display:flex;justify-content:center}
+#dock{display:flex;align-items:flex-end;gap:4px;padding:5px 12px;background:var(--dock-bg);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid var(--dock-border);border-radius:20px;box-shadow:var(--shadow);transition:var(--transition-theme)}
+#dock::before{content:'';position:absolute;bottom:-6px;left:10%;right:10%;height:6px;background:linear-gradient(to bottom,rgba(0,245,212,.06),transparent);border-radius:0 0 20px 20px;pointer-events:none}
+.dock-icon{font-size:38px;line-height:1;padding:4px 6px;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.56,.64,1),margin .18s;border-radius:12px;position:relative}
+.dock-icon:hover{transform:scale(1.45) translateY(-12px)}
+.dock-icon:hover~.dock-icon,.dock-icon:has(~.dock-icon:hover){transform:scale(1.15) translateY(-4px)}
+.dock-icon .tooltip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--menubar-bg);color:var(--text);font-size:11px;padding:3px 10px;border-radius:5px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;font-family:"Plus Jakarta Sans",sans-serif;backdrop-filter:blur(12px);border:1px solid var(--glass-border)}
+.dock-icon:hover .tooltip{opacity:1}
+.dock-dot{width:4px;height:4px;background:var(--accent);border-radius:50%;position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);opacity:0;transition:opacity .2s;box-shadow:0 0 6px var(--accent-glow)}
+.dock-dot.active{opacity:1}
+
+/* ── Windows ── */
+.app-window{position:absolute;min-width:520px;max-width:92vw;background:var(--glass-window);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:1px solid var(--glass-window-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);z-index:1000;display:none;flex-direction:column;overflow:hidden;transition:var(--transition-theme)}
+.app-window.open{display:flex;animation:windowBounce .32s cubic-bezier(.16,1,.3,1)}
+.app-window.focused{z-index:2000;box-shadow:var(--shadow-lg),0 0 40px var(--accent-glow)}
+@keyframes windowBounce{0%{opacity:0;transform:scale(.85)}60%{transform:scale(1.02)}100%{opacity:1;transform:scale(1)}}
+
+.win-titlebar{height:var(--titlebar-h);background:var(--titlebar-bg);backdrop-filter:blur(12px);display:flex;align-items:center;padding:0 14px;cursor:grab;flex-shrink:0;border-bottom:1px solid var(--titlebar-border);user-select:none;transition:var(--transition-theme)}
+.win-titlebar:active{cursor:grabbing}
+.traffic-lights{display:flex;gap:8px;margin-right:12px}
+.tl{width:12px;height:12px;border-radius:50%;cursor:pointer;position:relative;transition:filter .15s}
+.tl:hover{filter:brightness(1.15)}
+.tl-close{background:var(--red)}
+.tl-minimize{background:var(--yellow)}
+.tl-maximize{background:var(--green)}
+.tl::after{content:'';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8px;opacity:0;transition:opacity .15s}
+.win-titlebar:hover .tl-close::after{content:'×';opacity:1;color:#6a0000;font-size:11px;display:flex;align-items:center;justify-content:center}
+.win-titlebar:hover .tl-minimize::after{content:'−';opacity:1;color:#6a5500;font-size:11px;display:flex;align-items:center;justify-content:center}
+.win-titlebar:hover .tl-maximize::after{content:'+';opacity:1;color:#006a00;font-size:10px;display:flex;align-items:center;justify-content:center}
+.win-title{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--titlebar-text);letter-spacing:-.01em}
+
+.win-body{flex:1;overflow-y:auto;padding:20px;font-size:14px;line-height:1.6;max-height:60vh;scrollbar-width:thin;scrollbar-color:var(--scrollbar-thumb) transparent;color:var(--text)}
+.win-body::-webkit-scrollbar{width:7px}
+.win-body::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:4px}
+
+/* ── About / Profile Card ── */
+.profile-header{display:flex;gap:20px;align-items:center;margin-bottom:20px}
+.profile-header .avatar-wrap{position:relative;flex-shrink:0}
+.profile-header .avatar-wrap::after{content:'';position:absolute;inset:-3px;border-radius:22px;background:linear-gradient(135deg,var(--accent),var(--accent2));z-index:-1;opacity:.6}
+.profile-header img{width:100px;height:100px;border-radius:20px;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,.2);transition:transform .2s ease}
+.profile-header img:hover{transform:scale(1.05)}
+.profile-header .info h2{font-size:22px;font-weight:800;margin-bottom:2px}
+.profile-header .info .role{font-size:14px;color:var(--accent);font-weight:600;margin-bottom:4px;font-family:"JetBrains Mono",monospace;font-size:12px}
+.profile-header .info .loc{font-size:12px;color:var(--text-muted)}
+.bio{background:var(--bio-bg);padding:16px;border-radius:12px;margin-bottom:16px;font-size:14px;border-left:3px solid var(--bio-border);color:var(--text-secondary);line-height:1.7;transition:var(--transition-theme)}
+.lang-badges{display:flex;gap:8px;flex-wrap:wrap}
+.lang-badge{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:var(--surface);border:1px solid var(--surface-border);color:var(--text-secondary);transition:var(--transition-theme)}
+
+/* ── Carreira (Finder-style) ── */
+.finder-layout{display:flex;height:100%;gap:0}
+.finder-sidebar{width:200px;background:var(--finder-sidebar-bg);border-right:1px solid var(--finder-sidebar-border);padding:10px 0;flex-shrink:0;overflow-y:auto;max-height:55vh;transition:var(--transition-theme)}
+.finder-sidebar .section-label{font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;padding:8px 14px 4px;font-family:"JetBrains Mono",monospace}
+.finder-item{padding:6px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .1s;color:var(--text-secondary);white-space:nowrap}
+.finder-item:hover{background:var(--finder-item-hover)}
+.finder-item.active{background:var(--finder-active-bg);color:var(--finder-active-text);border-radius:6px;margin:0 6px;padding:6px 8px;font-weight:600}
+.finder-item .fi-icon{font-size:14px;flex-shrink:0}
+.finder-main{flex:1;padding:16px;overflow-y:auto;max-height:55vh}
+.career-card{display:none}
+.career-card.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+.career-card h3{font-size:18px;font-weight:700;margin-bottom:2px}
+.career-card .period{font-size:12px;color:var(--text-muted);margin-bottom:10px;font-family:"JetBrains Mono",monospace}
+.career-card .desc{font-size:13px;line-height:1.7;color:var(--text-secondary)}
+.career-card .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.career-card .tag{padding:3px 10px;background:var(--tag-bg);color:var(--tag-text);font-size:11px;border-radius:12px;font-weight:600}
+
+/* ── Formacao (Notes style) ── */
+.notes-item{padding:14px 16px;border-bottom:1px solid var(--notes-border);position:relative;transition:var(--transition-theme)}
+.notes-item:last-child{border-bottom:none}
+.notes-item .school{font-weight:700;font-size:15px}
+.notes-item .degree{font-size:13px;color:var(--text-secondary);margin-top:2px}
+.notes-item .year{font-size:11px;color:var(--accent);font-weight:600;margin-top:4px;font-family:"JetBrains Mono",monospace}
+
+/* ── Conquistas (badges) ── */
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.badge-card{background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:14px;padding:16px;text-align:center;transition:transform .15s,box-shadow .15s,border-color .2s}
+.badge-card:hover{transform:translateY(-3px);box-shadow:var(--badge-hover-shadow);border-color:var(--accent)}
+.badge-card .badge-ico{font-size:36px;margin-bottom:8px}
+.badge-card .badge-title{font-size:13px;font-weight:700}
+.badge-card .badge-sub{font-size:11px;color:var(--text-muted);margin-top:2px}
+
+/* ── Resultados (Activity Monitor) ── */
+.monitor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.stat-card{background:var(--stat-bg);border:1px solid var(--stat-border);border-radius:12px;padding:16px;text-align:center;transition:transform .2s,box-shadow .2s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--card-hover-shadow)}
+.stat-val{font-size:28px;font-weight:800;background:var(--stat-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:transform .2s ease}
+.stat-card:hover .stat-val{transform:scale(1.08)}
+.stat-label{font-size:12px;color:var(--text-muted);margin-top:4px}
+.stat-bar{height:6px;background:var(--stat-bar-bg);border-radius:3px;margin-top:10px;overflow:hidden}
+.stat-bar-fill{height:100%;border-radius:3px;background:var(--stat-gradient);transition:width 1.2s cubic-bezier(.25,.46,.45,.94)}
+
+/* ── Habilidades (App Store grid) ── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px}
+.skill-app{background:var(--skill-bg);border:1px solid var(--skill-border);border-radius:16px;padding:14px 8px;text-align:center;cursor:default;transition:transform .15s,box-shadow .15s,border-color .2s}
+.skill-app:hover{transform:translateY(-2px);box-shadow:var(--card-hover-shadow);border-color:var(--accent)}
+.skill-app .sa-icon{font-size:30px;margin-bottom:6px}
+.skill-app .sa-name{font-size:11px;font-weight:700}
+.skill-app .sa-cat{font-size:9px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;font-family:"JetBrains Mono",monospace;letter-spacing:.5px}
+
+/* ── Contato (Mail compose) ── */
+.mail-compose{font-size:13px}
+.mail-field{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--mail-border);gap:8px;transition:var(--transition-theme)}
+.mail-field .mf-label{font-size:11px;color:var(--text-muted);min-width:60px;font-weight:600;font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.5px}
+.mail-field .mf-value{color:var(--text);font-size:13px}
+.mail-field a{color:var(--accent);text-decoration:none;font-weight:500}
+.mail-field a:hover{text-decoration:underline}
+.mail-body{margin-top:16px;padding:14px;background:var(--mail-body-bg);border-radius:10px;font-size:13px;line-height:1.7;color:var(--text-secondary);min-height:100px;transition:var(--transition-theme)}
+
+/* ── Lixeira Easter Egg ── */
+.trash-content{text-align:center;padding:40px 20px}
+.trash-content .big-ico{font-size:64px;margin-bottom:16px}
+.trash-content p{font-size:14px;color:var(--text-muted);margin-top:8px}
+
+/* ── Notifications ── */
+.notification{position:fixed;top:40px;right:16px;background:var(--notif-bg);backdrop-filter:blur(20px);border:1px solid var(--notif-border);border-radius:14px;padding:14px 18px;box-shadow:var(--shadow);z-index:99000;animation:slideInNotif .35s cubic-bezier(.16,1,.3,1);max-width:340px;display:none;transition:var(--transition-theme)}
+.notification.show{display:block}
+@keyframes slideInNotif{0%{opacity:0;transform:translateY(-20px)}100%{opacity:1;transform:translateY(0)}}
+.notification .notif-title{font-size:13px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.notification .notif-body{font-size:12px;color:var(--text-muted)}
+
+/* ── Projetos section ── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.project-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:18px;transition:transform .15s,box-shadow .15s,border-color .2s;cursor:pointer;text-decoration:none;color:inherit;display:block}
+.project-card:hover{transform:translateY(-3px);box-shadow:var(--card-hover-shadow);border-color:var(--accent)}
+.project-card .proj-icon{font-size:32px;margin-bottom:10px}
+.project-card .proj-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.project-card .proj-desc{font-size:12px;color:var(--text-muted);line-height:1.5}
+.project-card .proj-tech{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px}
+.project-card .proj-tech span{padding:2px 8px;background:var(--tag-bg);color:var(--tag-text);font-size:10px;border-radius:8px;font-weight:600;font-family:"JetBrains Mono",monospace}
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  #menubar{font-size:11px;padding:0 10px}
+  #menubar .left span:not(.apple){display:none}
+  #menubar .right{gap:8px}
+  #icons-area{grid-template-columns:repeat(auto-fill,80px);justify-content:center;padding:16px 10px}
+  .desktop-icon .ico{font-size:36px}
+  .desktop-icon .label{font-size:10px}
+  #dock{gap:2px;padding:3px 8px}
+  .dock-icon{font-size:28px;padding:3px}
+  .dock-icon:hover{transform:scale(1.25) translateY(-6px)}
+  .app-window{min-width:auto!important;width:96vw!important;left:2vw!important;top:38px!important;max-height:85vh;border-radius:var(--radius)}
+  .finder-layout{flex-direction:column}
+  .finder-sidebar{width:100%;max-height:120px;border-right:none;border-bottom:1px solid var(--finder-sidebar-border);display:flex;flex-wrap:wrap;gap:0;padding:6px}
+  .finder-item{font-size:11px;padding:4px 8px}
+  .profile-header{flex-direction:column;text-align:center}
+  .badge-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .monitor-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .projects-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:480px){
+  .skills-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
+  .skill-app{padding:10px 6px}
+  .skill-app .sa-icon{font-size:24px}
+  .skill-app .sa-name{font-size:10px}
+  .badge-grid{grid-template-columns:1fr}
+  .finder-sidebar{max-height:100px}
+}
+</style>
+</head>
+<body>
+
+<!-- Boot Screen -->
+<div id="boot-screen">
+  <div class="boot-logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="15" width="80" height="55" rx="6" stroke="currentColor" stroke-width="3" style="color:var(--accent)"/>
+      <line x1="50" y1="70" x2="50" y2="80" stroke="currentColor" stroke-width="3" style="color:var(--accent)"/>
+      <line x1="35" y1="80" x2="65" y2="80" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="color:var(--accent)"/>
+      <text x="50" y="48" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" fill="currentColor" style="color:var(--accent)">&gt;_</text>
+    </svg>
+  </div>
+  <h1>RafaOS</h1>
+  <div class="boot-sub">v2.0 // infrastructure &amp; ai</div>
+  <div class="progress-track"><div class="progress-fill" id="boot-progress"></div></div>
+</div>
+
+<!-- Desktop -->
+<div id="desktop">
+
+  <!-- Menu Bar -->
+  <div id="menubar">
+    <div class="left">
+      <span class="apple">&gt;_ RafaOS</span>
+      <span>Arquivo</span>
+      <span>Editar</span>
+      <span>Ver</span>
+      <span>Terminal</span>
+    </div>
+    <div class="right">
+      <div class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+        <div class="toggle-icons"><span>🌙</span><span>☀️</span></div>
+      </div>
+      <span>📶</span>
+      <span>🔋 100%</span>
+      <span id="menu-clock"></span>
+      <img src="foto.jpg" alt="RF" style="width:18px;height:18px;border-radius:50%;object-fit:cover;border:1px solid var(--glass-border)" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <!-- Desktop Icons -->
+  <div id="icons-area">
+    <div class="desktop-icon" onclick="openWindow('sobre')">
+      <div class="ico">📁</div>
+      <div class="label">Sobre Mim</div>
+    </div>
+    <div class="desktop-icon" onclick="openWindow('carreira')">
+      <div class="ico">💼</div>
+      <div class="label">Carreira</div>
+    </div>
+    <div class="desktop-icon" onclick="openWindow('formacao')">
+      <div class="ico">🎓</div>
+      <div class="label">Formação</div>
+    </div>
+    <div class="desktop-icon" onclick="openWindow('conquistas')">
+      <div class="ico">🏆</div>
+      <div class="label">Certificações</div>
+    </div>
+    <div class="desktop-icon" onclick="openWindow('resultados')">
+      <div class="ico">📊</div>
+      <div class="label">Resultados</div>
+    </div>
+    <div class="desktop-icon" onclick="openWindow('habilidades')">
+      <div class="ico">🛠</div>
+      <div class="label">Habilidades</div>
+    </div>
+    <div class="desktop-icon" onclick="openWindow('projetos')">
+      <div class="ico">🚀</div>
+      <div class="label">Projetos</div>
+    </div>
+    <div class="desktop-icon" onclick="openWindow('contato')">
+      <div class="ico">📧</div>
+      <div class="label">Contato</div>
+    </div>
+    <div class="desktop-icon" onclick="window.open('https://www.linkedin.com/in/rbferreira','_blank')">
+      <div class="ico">📄</div>
+      <div class="label">LinkedIn.url</div>
+    </div>
+    <div class="desktop-icon" onclick="openWindow('lixeira')">
+      <div class="ico">🗑</div>
+      <div class="label">Lixeira</div>
+    </div>
+  </div>
+
+  <!-- ═══════ WINDOWS ═══════ -->
+
+  <!-- Sobre Mim -->
+  <div class="app-window" id="win-sobre" style="width:580px;top:60px;left:80px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-sobre')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('sobre')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('sobre')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">📁 Sobre Mim — Finder</div>
+    </div>
+    <div class="win-body">
+      <div class="profile-header">
+        <div class="avatar-wrap">
+          <img src="foto.jpg" alt="Rafael Ferreira" onerror="this.outerHTML='<div style=&quot;width:100px;height:100px;border-radius:20px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:40px&quot;>👨‍💻</div>'">
+        </div>
+        <div class="info">
+          <h2>Rafael Ferreira</h2>
+          <div class="role">ITOps & Infrastructure & Service Desk</div>
+          <div class="loc">📍 Rio de Janeiro, Brasil</div>
+        </div>
+      </div>
+      <div class="bio">
+        Profissional com ampla expertise em tecnologia, sempre orientado a resultados. Meu compromisso pessoal é desenvolver pessoas para alcançar impactos positivos significativos. Defensor da cultura DevOps e Agile, promovo eficiência e colaboração contínua. Foco em agregar valor e oferecer soluções eficazes para desafios complexos. Decisões fundamentadas em dados, buscando sempre excelência e precisão.
+      </div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text-muted)">🌐 Idiomas</div>
+      <div class="lang-badges">
+        <span class="lang-badge">🇧🇷 Português — Nativo</span>
+        <span class="lang-badge">🇺🇸 Inglês — Profissional</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Carreira -->
+  <div class="app-window" id="win-carreira" style="width:760px;top:70px;left:100px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-carreira')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('carreira')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('carreira')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">💼 Carreira — Finder</div>
+    </div>
+    <div class="win-body" style="padding:0">
+      <div class="finder-layout">
+        <div class="finder-sidebar">
+          <div class="section-label">Recentes</div>
+          <div class="finder-item active" onclick="showCareer(this,0)"><span class="fi-icon">🚚</span>Loggi</div>
+          <div class="finder-item" onclick="showCareer(this,1)"><span class="fi-icon">💡</span>Consultoria</div>
+          <div class="finder-item" onclick="showCareer(this,2)"><span class="fi-icon">📦</span>Olist</div>
+          <div class="section-label">OLX Brasil</div>
+          <div class="finder-item" onclick="showCareer(this,3)"><span class="fi-icon">👔</span>Coordenador</div>
+          <div class="finder-item" onclick="showCareer(this,4)"><span class="fi-icon">⚙️</span>Tech Lead</div>
+          <div class="finder-item" onclick="showCareer(this,5)"><span class="fi-icon">🖥</span>Analista</div>
+          <div class="section-label">Arquivo</div>
+          <div class="finder-item" onclick="showCareer(this,6)"><span class="fi-icon">🐧</span>Life / Fiocruz</div>
+          <div class="finder-item" onclick="showCareer(this,7)"><span class="fi-icon">🌐</span>NetMaker / Fiocruz</div>
+          <div class="finder-item" onclick="showCareer(this,8)"><span class="fi-icon">📂</span>Início</div>
+        </div>
+        <div class="finder-main">
+          <div class="career-card active" data-idx="0">
+            <h3>Loggi</h3>
+            <div class="period">mar/2025 — presente</div>
+            <div class="desc">Gerente de Infraestrutura de TI. Liderança estratégica de infraestrutura, ITOps e service desk em uma das maiores empresas de logística do Brasil. Gestão de times, contratos, projetos de cloud e automação, garantindo alta disponibilidade e suporte a operações críticas de entrega.</div>
+            <div class="tags"><span class="tag">Infrastructure</span><span class="tag">Cloud</span><span class="tag">ITSM</span><span class="tag">DevOps</span><span class="tag">Gestão</span></div>
+          </div>
+          <div class="career-card" data-idx="1">
+            <h3>Consultoria Independente</h3>
+            <div class="period">fev/2024 — mar/2025 · 1 ano 2 meses</div>
+            <div class="desc">Consultor de TI atuando em projetos de infraestrutura, modernização de ambientes e implementação de práticas DevOps para empresas em transformação digital.</div>
+            <div class="tags"><span class="tag">Consultoria</span><span class="tag">DevOps</span><span class="tag">Infraestrutura</span></div>
+          </div>
+          <div class="career-card" data-idx="2">
+            <h3>Olist</h3>
+            <div class="period">fev/2021 — fev/2024 · 3 anos 1 mês</div>
+            <div class="desc">Tech Infrastructure Manager | ITOps & Service Desk. Criação do zero dos times de ITOps e Service Desk — processos, métricas e execução de toda a infraestrutura. Implementação de ITSM, gestão de inventário, gestão de usuários e monitoramento, com foco em autonomia e empoderamento dos times.</div>
+            <div class="tags"><span class="tag">ITOps</span><span class="tag">Service Desk</span><span class="tag">ITSM</span><span class="tag">Monitoramento</span><span class="tag">Gestão de Times</span></div>
+          </div>
+          <div class="career-card" data-idx="3">
+            <h3>OLX Brasil — Coordenador</h3>
+            <div class="period">mar/2020 — fev/2021 · 1 ano</div>
+            <div class="desc">Coordenador de Infraestrutura de TI. À frente dos times de ITOps, sistemas corporativos e Desenvolvimento VoIP. Liderança e desenvolvimento de pessoas, negociação e gestão de contratos, definição de métricas e geração de visibilidade para a área.</div>
+            <div class="tags"><span class="tag">Liderança</span><span class="tag">VoIP</span><span class="tag">Contratos</span><span class="tag">Métricas</span></div>
+          </div>
+          <div class="career-card" data-idx="4">
+            <h3>OLX Brasil — Tech Lead</h3>
+            <div class="period">jun/2017 — mar/2020 · 2 anos 10 meses</div>
+            <div class="desc">Tech Lead de Infraestrutura de TI. Referência técnica do time, conduzindo projetos de evolução da infraestrutura corporativa em um dos maiores marketplaces da América Latina.</div>
+            <div class="tags"><span class="tag">Tech Lead</span><span class="tag">Infraestrutura</span><span class="tag">Marketplace</span></div>
+          </div>
+          <div class="career-card" data-idx="5">
+            <h3>OLX Brasil — Analista</h3>
+            <div class="period">fev/2016 — jun/2017 · 1 ano 5 meses</div>
+            <div class="desc">Analista de Infraestrutura de TI. Sustentação e evolução do ambiente corporativo, suporte a servidores, redes e serviços críticos do negócio.</div>
+            <div class="tags"><span class="tag">Infraestrutura</span><span class="tag">Servidores</span><span class="tag">Redes</span></div>
+          </div>
+          <div class="career-card" data-idx="6">
+            <h3>Life Tecnologia / Fiocruz</h3>
+            <div class="period">out/2013 — out/2015 · 2 anos 1 mês</div>
+            <div class="desc">Evolução de Técnico de Suporte Sênior a Analista de Sistemas Linux Pleno, atuando na Fiocruz (CTM Farmanguinhos). Administração de servidores Linux, automação de processos e suporte de infraestrutura.</div>
+            <div class="tags"><span class="tag">Linux</span><span class="tag">Fiocruz</span><span class="tag">Automação</span></div>
+          </div>
+          <div class="career-card" data-idx="7">
+            <h3>NetMaker Redes e Sistemas</h3>
+            <div class="period">set/2008 — set/2013 · 5 anos 1 mês</div>
+            <div class="desc">De Operador NOC a Analista de Suporte Pleno, atuando em CTM Farmanguinhos/Fiocruz. Monitoramento com Nagios e Zabbix, gestão de backup com Bacula, instalação e configuração de servidores em datacenter. Atendimento de cartela de clientes e triagem de incidentes.</div>
+            <div class="tags"><span class="tag">NOC</span><span class="tag">Nagios</span><span class="tag">Zabbix</span><span class="tag">Bacula</span><span class="tag">Datacenter</span></div>
+          </div>
+          <div class="career-card" data-idx="8">
+            <h3>Início de Carreira</h3>
+            <div class="period">dez/2005 — ago/2008 · 2 anos 9 meses</div>
+            <div class="desc">Técnico de Suporte Field Service na Netcenter, atendendo a 5ª Coordenadoria Regional de Educação. Construção dos fundamentos em suporte técnico, manutenção de hardware e atendimento ao usuário.</div>
+            <div class="tags"><span class="tag">Field Service</span><span class="tag">Suporte</span><span class="tag">Hardware</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formação -->
+  <div class="app-window" id="win-formacao" style="width:500px;top:90px;left:180px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-formacao')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('formacao')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('formacao')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">🎓 Formação — Notas</div>
+    </div>
+    <div class="win-body" style="padding:0">
+      <div class="notes-item">
+        <div class="school">PUC-RS</div>
+        <div class="degree">Competências Profissionais, Emocionais e Tecnológicas</div>
+        <div class="year">2020</div>
+      </div>
+      <div class="notes-item">
+        <div class="school">Universidade Estácio de Sá</div>
+        <div class="degree">Gestão de Tecnologia da Informação</div>
+        <div class="year">2013 — 2016</div>
+      </div>
+      <div class="notes-item">
+        <div class="school">Colégio Castelo Branco</div>
+        <div class="degree">Técnico em Processamento de Dados</div>
+        <div class="year">1999 — 2002</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conquistas / Certificações -->
+  <div class="app-window" id="win-conquistas" style="width:560px;top:80px;left:200px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-conquistas')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('conquistas')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('conquistas')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">🏆 Certificações — Badges</div>
+    </div>
+    <div class="win-body">
+      <div class="badge-grid">
+        <div class="badge-card">
+          <div class="badge-ico">📊</div>
+          <div class="badge-title">Management 3.0</div>
+          <div class="badge-sub">Métricas e OKRs</div>
+        </div>
+        <div class="badge-card">
+          <div class="badge-ico">🧠</div>
+          <div class="badge-title">Gerenciando Dados</div>
+          <div class="badge-sub">Melhores Decisões</div>
+        </div>
+        <div class="badge-card">
+          <div class="badge-ico">👥</div>
+          <div class="badge-title">Pessoas, Cultura & Performance</div>
+          <div class="badge-sub">Estratégias de Empresas Inovadoras</div>
+        </div>
+        <div class="badge-card">
+          <div class="badge-ico">🎨</div>
+          <div class="badge-title">Reaprendizagem Criativa</div>
+          <div class="badge-sub">Inovação e criatividade</div>
+        </div>
+        <div class="badge-card">
+          <div class="badge-ico">🔒</div>
+          <div class="badge-title">LGPD</div>
+          <div class="badge-sub">Profissional de Privacidade de Dados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  <div class="app-window" id="win-resultados" style="width:600px;top:75px;left:140px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-resultados')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('resultados')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('resultados')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">📊 Resultados — Monitor de Atividade</div>
+    </div>
+    <div class="win-body">
+      <div class="monitor-grid">
+        <div class="stat-card">
+          <div class="stat-val">+20</div>
+          <div class="stat-label">Anos de experiência em TI</div>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:0" data-target="95"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">5+</div>
+          <div class="stat-label">Times criados do zero</div>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:0" data-target="80"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">99.9%</div>
+          <div class="stat-label">Uptime como meta</div>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:0" data-target="99"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">3</div>
+          <div class="stat-label">Grandes empresas lideradas</div>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:0" data-target="70"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">ITSM</div>
+          <div class="stat-label">Processos implementados</div>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:0" data-target="85"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">∞</div>
+          <div class="stat-label">Desafios superados</div>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:0" data-target="100"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Habilidades -->
+  <div class="app-window" id="win-habilidades" style="width:560px;top:85px;left:160px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-habilidades')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('habilidades')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('habilidades')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">🛠 Habilidades — App Store</div>
+    </div>
+    <div class="win-body">
+      <div class="skills-grid">
+        <div class="skill-app"><div class="sa-icon">🐧</div><div class="sa-name">Linux</div><div class="sa-cat">Infra</div></div>
+        <div class="skill-app"><div class="sa-icon">☁️</div><div class="sa-name">Cloud</div><div class="sa-cat">Infra</div></div>
+        <div class="skill-app"><div class="sa-icon">🔄</div><div class="sa-name">DevOps</div><div class="sa-cat">Cultura</div></div>
+        <div class="skill-app"><div class="sa-icon">🎫</div><div class="sa-name">ITSM</div><div class="sa-cat">Processo</div></div>
+        <div class="skill-app"><div class="sa-icon">📊</div><div class="sa-name">Monitoramento</div><div class="sa-cat">Ops</div></div>
+        <div class="skill-app"><div class="sa-icon">🤖</div><div class="sa-name">IA & Automação</div><div class="sa-cat">Inovação</div></div>
+        <div class="skill-app"><div class="sa-icon">🌐</div><div class="sa-name">Redes</div><div class="sa-cat">Infra</div></div>
+        <div class="skill-app"><div class="sa-icon">🏗</div><div class="sa-name">Datacenter</div><div class="sa-cat">Infra</div></div>
+        <div class="skill-app"><div class="sa-icon">🎯</div><div class="sa-name">OKRs</div><div class="sa-cat">Gestão</div></div>
+        <div class="skill-app"><div class="sa-icon">👥</div><div class="sa-name">Liderança</div><div class="sa-cat">Gestão</div></div>
+        <div class="skill-app"><div class="sa-icon">📋</div><div class="sa-name">Agile</div><div class="sa-cat">Cultura</div></div>
+        <div class="skill-app"><div class="sa-icon">🔒</div><div class="sa-name">LGPD</div><div class="sa-cat">Compliance</div></div>
+        <div class="skill-app"><div class="sa-icon">🐳</div><div class="sa-name">Containers</div><div class="sa-cat">DevOps</div></div>
+        <div class="skill-app"><div class="sa-icon">📈</div><div class="sa-name">Zabbix</div><div class="sa-cat">Monitor</div></div>
+        <div class="skill-app"><div class="sa-icon">🔥</div><div class="sa-name">Nagios</div><div class="sa-cat">Monitor</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projetos -->
+  <div class="app-window" id="win-projetos" style="width:580px;top:70px;left:120px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-projetos')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('projetos')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('projetos')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">🚀 Projetos — Launchpad</div>
+    </div>
+    <div class="win-body">
+      <div class="projects-grid">
+        <a class="project-card" href="https://github.com/rbferreira/TokenBar" target="_blank">
+          <div class="proj-icon">📊</div>
+          <div class="proj-name">TokenBar</div>
+          <div class="proj-desc">Widget Windows para monitoramento em tempo real de tokens, rate limits e custo de sessão do Claude Code.</div>
+          <div class="proj-tech"><span>Python</span><span>Win32</span><span>Tkinter</span></div>
+        </a>
+        <a class="project-card" href="https://github.com/rbferreira/jsm-dashboard" target="_blank">
+          <div class="proj-icon">📈</div>
+          <div class="proj-name">JSM Dashboard</div>
+          <div class="proj-desc">Dashboard open-source para Jira Service Management com KPIs, gráficos Plotly e análise de tickets.</div>
+          <div class="proj-tech"><span>Python</span><span>Streamlit</span><span>Plotly</span></div>
+        </a>
+        <div class="project-card">
+          <div class="proj-icon">🖨</div>
+          <div class="proj-name">TREVOS3D</div>
+          <div class="proj-desc">Empresa própria de impressão 3D e prototipagem. Fundada em 2022, unindo tecnologia e criatividade.</div>
+          <div class="proj-tech"><span>3D Printing</span><span>Empreendedorismo</span></div>
+        </div>
+        <a class="project-card" href="https://github.com/rbferreira/DevOpsLab-HelloWorld" target="_blank">
+          <div class="proj-icon">⚙️</div>
+          <div class="proj-name">DevOps Lab</div>
+          <div class="proj-desc">Demonstração do ciclo completo de uma pipeline DevOps — CI/CD na prática.</div>
+          <div class="proj-tech"><span>DevOps</span><span>CI/CD</span><span>Pipeline</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contato -->
+  <div class="app-window" id="win-contato" style="width:500px;top:95px;left:220px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-contato')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('contato')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('contato')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">📧 Contato — Mail</div>
+    </div>
+    <div class="win-body">
+      <div class="mail-compose">
+        <div class="mail-field">
+          <span class="mf-label">Email</span>
+          <span class="mf-value"><a href="mailto:raf@elferreira.com">raf@elferreira.com</a></span>
+        </div>
+        <div class="mail-field">
+          <span class="mf-label">LinkedIn</span>
+          <span class="mf-value"><a href="https://www.linkedin.com/in/rbferreira" target="_blank">linkedin.com/in/rbferreira</a></span>
+        </div>
+        <div class="mail-field">
+          <span class="mf-label">GitHub</span>
+          <span class="mf-value"><a href="https://github.com/rbferreira" target="_blank">github.com/rbferreira</a></span>
+        </div>
+        <div class="mail-field">
+          <span class="mf-label">Fone</span>
+          <span class="mf-value"><a href="tel:+5521988937015">(21) 98893-7015</a></span>
+        </div>
+        <div class="mail-field">
+          <span class="mf-label">Local</span>
+          <span class="mf-value">Rio de Janeiro, RJ — Brasil</span>
+        </div>
+        <div class="mail-body">
+          Olá Rafael! 👋<br><br>
+          Vi seu portfólio e gostaria de conversar sobre uma oportunidade...<br><br>
+          <span style="color:var(--text-muted);font-style:italic">— Escreva sua mensagem aqui</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lixeira -->
+  <div class="app-window" id="win-lixeira" style="width:400px;top:100px;left:260px">
+    <div class="win-titlebar" onmousedown="startDrag(event,'win-lixeira')">
+      <div class="traffic-lights">
+        <div class="tl tl-close" onclick="closeWindow('lixeira')"></div>
+        <div class="tl tl-minimize" onclick="closeWindow('lixeira')"></div>
+        <div class="tl tl-maximize"></div>
+      </div>
+      <div class="win-title">🗑 Lixeira</div>
+    </div>
+    <div class="win-body">
+      <div class="trash-content">
+        <div class="big-ico">🗑</div>
+        <h3 style="font-size:16px">A Lixeira está vazia!</h3>
+        <p>Nenhum arquivo descartado.</p>
+        <p style="margin-top:16px;font-size:12px;color:var(--text-muted)">...mas se você está procurando razões para <strong>não</strong> me contratar,<br>talvez encontre aqui. 🤷‍♂️</p>
+        <p style="margin-top:16px;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace">$ sudo rm -rf /desculpas<br>rm: cannot remove '/desculpas': Operation not permitted</p>
+        <p style="margin-top:20px;font-size:24px;cursor:pointer" id="trash-emoji">😄</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dock -->
+  <div id="dock-wrapper">
+    <div id="dock">
+      <div class="dock-icon" onclick="openWindow('sobre')"><span class="tooltip">Sobre Mim</span>📁<div class="dock-dot" id="dot-sobre"></div></div>
+      <div class="dock-icon" onclick="openWindow('carreira')"><span class="tooltip">Carreira</span>💼<div class="dock-dot" id="dot-carreira"></div></div>
+      <div class="dock-icon" onclick="openWindow('formacao')"><span class="tooltip">Formação</span>🎓<div class="dock-dot" id="dot-formacao"></div></div>
+      <div class="dock-icon" onclick="openWindow('conquistas')"><span class="tooltip">Certificações</span>🏆<div class="dock-dot" id="dot-conquistas"></div></div>
+      <div class="dock-icon" onclick="openWindow('resultados')"><span class="tooltip">Resultados</span>📊<div class="dock-dot" id="dot-resultados"></div></div>
+      <div class="dock-icon" onclick="openWindow('habilidades')"><span class="tooltip">Habilidades</span>🛠<div class="dock-dot" id="dot-habilidades"></div></div>
+      <div class="dock-icon" onclick="openWindow('projetos')"><span class="tooltip">Projetos</span>🚀<div class="dock-dot" id="dot-projetos"></div></div>
+      <div class="dock-icon" onclick="openWindow('contato')"><span class="tooltip">Contato</span>📧<div class="dock-dot" id="dot-contato"></div></div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notif">
+    <div class="notif-title">⚡ Bem-vindo ao RafaOS</div>
+    <div class="notif-body">Clique nos ícones da área de trabalho ou no dock para explorar o portfólio.</div>
+  </div>
+
+</div><!-- /desktop -->
+
+<script>
+// ── Theme System ──
+function toggleTheme(){
+  const html=document.documentElement;
+  const current=html.getAttribute('data-theme');
+  const next=current==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('rafaos-theme',next);
+}
+// Restore saved theme
+(function(){
+  const saved=localStorage.getItem('rafaos-theme');
+  if(saved) document.documentElement.setAttribute('data-theme',saved);
+})();
+
+// ── Boot Sequence ──
+(function boot(){
+  const bar=document.getElementById('boot-progress');
+  const screen=document.getElementById('boot-screen');
+  const desktop=document.getElementById('desktop');
+  let pct=0;
+  const iv=setInterval(()=>{
+    pct+=Math.random()*6+2;
+    if(pct>100) pct=100;
+    bar.style.width=pct+'%';
+    if(pct>=100){
+      clearInterval(iv);
+      setTimeout(()=>{
+        screen.classList.add('hidden');
+        desktop.classList.add('visible');
+        setTimeout(()=>screen.remove(),700);
+        // welcome notification
+        setTimeout(()=>{
+          const n=document.getElementById('notif');
+          n.classList.add('show');
+          setTimeout(()=>n.classList.remove('show'),4500);
+        },500);
+        // animate result bars
+        setTimeout(animateBars,800);
+      },400);
+    }
+  },55);
+})();
+
+// ── Clock ──
+function updateClock(){
+  const now=new Date();
+  const d=now.toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'});
+  const t=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('menu-clock').textContent=d+' '+t;
+}
+updateClock();
+setInterval(updateClock,15000);
+
+// ── Window Management ──
+let topZ=2000;
+const openWindows=new Set();
+const allWindows=['sobre','carreira','formacao','conquistas','resultados','habilidades','projetos','contato','lixeira'];
+
+function openWindow(id){
+  const win=document.getElementById('win-'+id);
+  if(!win) return;
+  win.classList.add('open');
+  focusWindow(id);
+  openWindows.add(id);
+  updateDots();
+  if(id==='resultados') setTimeout(animateBars,100);
+}
+
+function closeWindow(id){
+  const win=document.getElementById('win-'+id);
+  if(!win) return;
+  win.style.transition='opacity .18s,transform .18s';
+  win.style.opacity='0';
+  win.style.transform='scale(.95)';
+  setTimeout(()=>{
+    win.classList.remove('open','focused');
+    win.style.opacity='';
+    win.style.transform='';
+    win.style.transition='';
+    openWindows.delete(id);
+    updateDots();
+  },180);
+}
+
+function focusWindow(id){
+  document.querySelectorAll('.app-window').forEach(w=>w.classList.remove('focused'));
+  const win=document.getElementById('win-'+id);
+  topZ++;
+  win.style.zIndex=topZ;
+  win.classList.add('focused');
+}
+
+function updateDots(){
+  allWindows.forEach(id=>{
+    const dot=document.getElementById('dot-'+id);
+    if(dot) dot.classList.toggle('active',openWindows.has(id));
+  });
+}
+
+// click window to focus
+document.addEventListener('mousedown',e=>{
+  const win=e.target.closest('.app-window');
+  if(win){
+    const id=win.id.replace('win-','');
+    focusWindow(id);
+  }
+});
+
+// ── Dragging ──
+let dragState=null;
+function startDrag(e,winId){
+  if(e.target.classList.contains('tl')) return;
+  const win=document.getElementById(winId);
+  const rect=win.getBoundingClientRect();
+  dragState={win,offsetX:e.clientX-rect.left,offsetY:e.clientY-rect.top};
+  focusWindow(winId.replace('win-',''));
+  e.preventDefault();
+}
+document.addEventListener('mousemove',e=>{
+  if(!dragState) return;
+  const x=e.clientX-dragState.offsetX;
+  const y=e.clientY-dragState.offsetY;
+  dragState.win.style.left=Math.max(0,x)+'px';
+  dragState.win.style.top=Math.max(28,y)+'px';
+});
+document.addEventListener('mouseup',()=>{dragState=null});
+
+// ── Touch Support ──
+document.addEventListener('touchstart',e=>{
+  const tb=e.target.closest('.win-titlebar');
+  if(!tb||e.target.classList.contains('tl')) return;
+  const win=tb.closest('.app-window');
+  const rect=win.getBoundingClientRect();
+  const touch=e.touches[0];
+  dragState={win,offsetX:touch.clientX-rect.left,offsetY:touch.clientY-rect.top};
+},{passive:true});
+document.addEventListener('touchmove',e=>{
+  if(!dragState) return;
+  const touch=e.touches[0];
+  const x=touch.clientX-dragState.offsetX;
+  const y=touch.clientY-dragState.offsetY;
+  dragState.win.style.left=Math.max(0,x)+'px';
+  dragState.win.style.top=Math.max(28,y)+'px';
+},{passive:true});
+document.addEventListener('touchend',()=>{dragState=null});
+
+// ── Carreira Finder Navigation ──
+function showCareer(el,idx){
+  el.closest('.finder-sidebar').querySelectorAll('.finder-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  el.closest('.finder-layout').querySelectorAll('.career-card').forEach(c=>{
+    c.classList.toggle('active',parseInt(c.dataset.idx)===idx);
+  });
+}
+
+// ── Animate Stat Bars ──
+function animateBars(){
+  document.querySelectorAll('.stat-bar-fill').forEach(bar=>{
+    const target=bar.dataset.target;
+    setTimeout(()=>{bar.style.width=target+'%'},80);
+  });
+}
+
+// ── Trash Easter Egg ──
+const trashEmojis=['😄','😂','🤭','😜','🫡','💅','🤷‍♂️','😎','🫠','🐧','💀'];
+let trashIdx=0;
+document.getElementById('trash-emoji').addEventListener('click',function(){
+  trashIdx=(trashIdx+1)%trashEmojis.length;
+  this.textContent=trashEmojis[trashIdx];
+  this.style.transform='scale(1.3)';
+  setTimeout(()=>this.style.transform='',200);
+});
+</script>
+</body>
+</html>
